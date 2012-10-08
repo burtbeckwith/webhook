@@ -81,7 +81,8 @@ class WebhookController {
     def create() {
 		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
 		if(user){
-        	[webhookInstance: new Webhook(params),service:grailsApplication.config.webhook.services,format:grailsApplication.config.webhook.formats]
+			def format = ['XML','JSON']
+        	[webhookInstance: new Webhook(params),service:grailsApplication.config.webhook.services,format:format]
         }else{
         	return redirect(uri: "/")
         }
@@ -124,7 +125,8 @@ class WebhookController {
     def edit() {
 		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
 		if(user){
-        	[webhookInstance: Webhook.get(params.id),service:grailsApplication.config.webhook.services,format:grailsApplication.config.webhook.formats]
+			def format = ['XML','JSON']
+        	[webhookInstance: Webhook.get(params.id),service:grailsApplication.config.webhook.services,format:format]
         }else{
         	return redirect(uri: "/")
         }
@@ -160,7 +162,6 @@ class WebhookController {
     }
 
     def show() {
-    
 		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
 		if(user){
 			boolean superuser = 0
