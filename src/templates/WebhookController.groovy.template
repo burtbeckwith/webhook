@@ -1,0 +1,220 @@
+
+package ${packageName}
+
+import org.springframework.dao.DataIntegrityViolationException
+import grails.plugins.springsecurity.Secured
+import java.util.Date;
+
+class WebhookController {
+
+	def springSecurityService
+	def webhookService
+	
+	// Change this to fit your authorities
+	def webHookAdmins = ['ROLE_ROOT','ROLE_ADMIN']
+	
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+   
+	def api(){
+		switch(request.method){
+			case "POST":
+				def json = request.JSON
+				this.save()
+				break
+			case "GET":
+				def json = request.JSON
+				if(params.id>0 && !isEmpty(params.id)){
+			        this.show()
+				}else{
+					response.status = 400 //Bad Request
+					render "SHOW request must include the id"
+				}
+				break
+			case "PUT":
+				def json = request.JSON
+				this.update()
+				break
+			case "DELETE":
+				def json = request.JSON
+				if(params.id){
+			        def hook = Webhook.get(params.id)
+			        if(hook){
+			          hook.delete()
+					  response.status = 200
+					  render "Successfully Deleted."
+			        }else{
+			          response.status = 404 //Not Found
+			          render "Id not found."
+			        }
+				}else{
+					response.status = 400 //Bad Request
+					render "DELETE request must include the id"
+				}
+				break
+		  }
+		return
+	}
+   
+    def index() {
+        redirect(action: "list", params: params)
+    }
+
+    def list() {
+		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
+		if(user){
+			boolean superuser = 0
+			def roleNames = springSecurityService.principal.authorities*.authority
+			roleNames.each(){
+				if(webHookAdmins.contains(it)){
+					superuser=1
+				}
+			} 
+			def webhookList = (superuser)?Webhook.findAll():Webhook.findAllBy${userClassName}(user)
+			
+			[webhookInstanceList: webhookList, webhookInstanceTotal: webhookList.size()]
+        }else{
+        	return redirect(uri: "/")
+        }
+        
+    }
+
+    def create() {
+		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
+		if(user){
+        	[webhookInstance: new Webhook(params),service:grailsApplication.config.webhook.services,format:grailsApplication.config.webhook.formats]
+        }else{
+        	return redirect(uri: "/")
+        }
+    }
+
+    def save() {
+		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
+		if(user){
+			Webhook webhookInstance = Webhook.findByUrlAndService(params.url,params.service)
+			def protocol = webhookService.checkProtocol(params.url)
+			if(!webhookInstance){
+				if(protocol){
+					params.user=user
+					params.dateCreated= new Date()
+					webhookInstance = new Webhook(params)
+				}else{
+					flash.message = "BAD PROTOCOL: URL MUST BE FORMATTED WITH HTTP/HTTPS. PLEASE TRY AGAIN."
+					render(view:"create",model:[params:params])
+					return
+				}
+			}else{
+				flash.message = "URL EXISTS: PLEASE CHECK YOUR REGISTERED WEBHOOKS TO MAKE SURE THIS IS NOT A DUPLICATE."
+				render(view:"create",model:[params:params])
+				return
+			}
+			if (!webhookInstance.save(flush: true)) {
+				flash.message = "INVALID/MALFORMED DATA: PLEASE SEE DOCS FOR 'JSON' FORMED STRING AND PLEASE TRY AGAIN."
+				render(view:"create",model:[params:params])
+				return
+			}else{
+				flash.message = message(code: 'default.created.message', args: [message(code: 'webhook.label', default: 'Webhook'), webhookInstance.id])
+				redirect(action:"show", id: webhookInstance.id)
+				return
+			}
+        }else{
+        	return redirect(uri: "/")
+        }
+    }
+    
+    def edit() {
+		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
+		if(user){
+        	[webhookInstance: Webhook.get(params.id),service:grailsApplication.config.webhook.services,format:grailsApplication.config.webhook.formats]
+        }else{
+        	return redirect(uri: "/")
+        }
+    }
+    
+    def update() {
+		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
+		if(user){
+			Webhook webhookInstance = Webhook.FindByIdAnd${userClassName}(params.id,params.user)
+			if(webhookInstance){
+				webhookInstance.name = params.name
+				webhookInstance.url = params.url
+				webhookInstance.format = params.format
+				webhookInstance.service = params.service
+				webhookInstance.dateModified = new Date()
+			}else{
+				flash.message = "WEBHOOK NOT FOUND: NO WEBHOOK WITH THAT ID FOUND BELONGING TO CURRENT USER."
+				render(view:"create",model:[params:params])
+				return
+			}
+			if (!webhookInstance.save(flush: true)) {
+				flash.message = "INVALID/MALFORMED DATA: PLEASE SEE DOCS FOR 'JSON' FORMED STRING AND PLEASE TRY AGAIN."
+				render(view:"create",model:[params:params])
+				return
+			}else{
+				flash.message = message(code: 'default.created.message', args: [message(code: 'webhook.label', default: 'Webhook'), webhookInstance.id])
+				redirect(action:"show", id: webhookInstance.id)
+				return
+			}
+        }else{
+        	return redirect(uri: "/")
+        }
+    }
+
+    def show() {
+    
+		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
+		if(user){
+			boolean superuser = 0
+			def roleNames = springSecurityService.principal.authorities*.authority
+			roleNames.each(){
+				if(webHookAdmins.contains(it)){
+					superuser=1
+				}
+			}
+			def webhookInstance = (superuser)?Webhook.findById(params.id.toLong()):Webhook.findBy${userClassName}AndId(user,params.id.toLong())
+			
+	        if (!webhookInstance) {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'webhook.label', default: 'Webhook'), params.id])
+				redirect(action: "list")
+	            return
+	        }else{
+				render(view:"show",model:[webhookInstance: webhookInstance])
+				return
+			}
+        }else{
+        	return redirect(uri: "/")
+        }
+    }
+
+    def delete() {
+		def user = springSecurityService.isLoggedIn() ? ${userClassName}.get(springSecurityService.principal.id) : null
+		if(user){
+			boolean superuser = 0
+			def roleNames = springSecurityService.principal.authorities*.authority
+			roleNames.each(){
+				if(webHookAdmins.contains(it)){
+					superuser=1
+				}
+			}
+			def webhookInstance = (superuser)?Webhook.findById(params.id.toLong()):Webhook.findBy${userClassName}AndId(user,params.id.toLong())
+	
+	        if (!webhookInstance) {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'webhook.label', default: 'Webhook'), params.id])
+	            redirect(action: "list")
+	            return
+	        }
+	
+	        try {
+	            webhookInstance.delete(flush: true)
+				flash.message = message(code: 'default.deleted.message', args: [message(code: 'webhook.label', default: 'Webhook'), params.id])
+	            redirect(action: "list")
+				return
+	        }catch (DataIntegrityViolationException e) {
+				flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'webhook.label', default: 'Webhook'), params.id])
+	            redirect(action: "show", id: params.id)
+				return
+	        }
+        }else{
+        	return redirect(uri: "/")
+        }
+    }
+}

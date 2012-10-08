@@ -1,0 +1,23 @@
+package ${packageName}
+
+import java.util.Date;
+
+class Webhook {
+	${userClassName} user
+	String name
+	String url
+	String format = 'JSON'
+	String service
+	int attempts = 0
+	Date dateCreated
+	Date dateModified = new Date()
+
+    static constraints = {
+		user(nullable:false)
+		name(nullable:false)
+		url(nullable:false)
+		format(nullable:false)
+		service(nullable:false)
+		attempts(nullable:false)
+    }
+}

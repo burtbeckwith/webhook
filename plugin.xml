@@ -1,0 +1,23 @@
+<plugin name='webhook' version='0.1' grailsVersion='* &gt; 2.0'>
+  <author>Owen Rubel</author>
+  <authorEmail>orubel@gmail.com</authorEmail>
+  <title>Webhook Plugin</title>
+  <description>A plugin to easily register and associate a webhook with services provided by individualized controllers
+</description>
+  <documentation>http://grails.org/plugin/webhook</documentation>
+  <type>WebhookGrailsPlugin</type>
+  <resources>
+    <resource>net.nosegrind.webhook.WebhookService</resource>
+  </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://grails.org/plugins' />
+    <repository name='http://repo.grails.org/grails/core' url='http://repo.grails.org/grails/core/' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+  </repositories>
+  <dependencies />
+  <plugins />
+  <runtimePluginRequirements>
+    <plugin name='springSecurityCore' version='0.4 &gt; *' />
+  </runtimePluginRequirements>
+  <behavior />
+</plugin>
