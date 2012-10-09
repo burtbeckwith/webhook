@@ -92,8 +92,8 @@ private void updateConfig() {
 			it.writeLine '\n// Added by the Webhook plugin:'
 			it.writeLine "webhook.attempts = 5"
 			it.writeLine "webhook.services = []"
-			it.writeLine "webhook.domain = 'com.geezo.Webhook'"
-			it.writeLine "webhook.controller = 'com.geezo.WebhookController'"
+			it.writeLine "webhook.domain = '${packageName}.Webhook'"
+			it.writeLine "webhook.controller = '${packageName}.WebhookController'"
 		}
 	}
 }
