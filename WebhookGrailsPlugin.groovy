@@ -5,7 +5,6 @@ class WebhookGrailsPlugin {
     def grailsVersion = "* > 2.0"
     // the other plugins this plugin depends on
 	
-	Map dependsOn = [springSecurityCore: '0.4 > *']
 	//def loadBefore = ['controllers']
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
