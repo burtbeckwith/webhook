@@ -6,11 +6,10 @@ import grails.converters.XML
 class WebhookService {
 
 	def grailsApplication
-	
-    static transactional = false
-    static scope = "prototype"
 
-    def postToURL(String service, Map data, String state) { 
+    static transactional = false
+
+    def postToURL(String service, Map data, String state) {
 		// set attempts number in config.properties so we can override
 		def hooks = grailsApplication.getClassForName(grailsApplication.config.webhook.domain).findAll("from Webhook where service='${service}' and attempts<5")
 		hooks.each { hook ->
@@ -59,7 +58,7 @@ class WebhookService {
 	    }
 		return newMap
 	}
-	
+
 	boolean checkProtocol(String url){
 		if(url.size()>=4){
 			if(url[0..3]=='http'){
