@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -24,38 +22,24 @@
 				<thead>
 					<tr>
 						<g:sortableColumn property="id" title="${message(code: 'webhook.id.label', default: 'Id')}" />
-						
 						<g:sortableColumn property="user" title="${message(code: 'webhook.user.label', default: 'User')}" />
-					
 						<g:sortableColumn property="name" title="${message(code: 'webhook.name.label', default: 'Name')}" />
-					
 						<g:sortableColumn property="url" title="${message(code: 'webhook.url.label', default: 'Url')}" />
-					
 						<g:sortableColumn property="format" title="${message(code: 'webhook.format.label', default: 'Format')}" />
-					
 						<g:sortableColumn property="service" title="${message(code: 'webhook.service.label', default: 'Service')}" />
-					
 						<g:sortableColumn property="attempts" title="${message(code: 'webhook.attempts.label', default: 'Attempts')}" />
-					
 					</tr>
 				</thead>
 				<tbody>
 				<g:each in="${webhookInstanceList}" status="i" var="webhookInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 						<td><g:link action="show" id="${webhookInstance.id}">${fieldValue(bean: webhookInstance, field: "id")}</g:link></td>
-						
 						<td>${webhookInstance.user.username}</td>
-					
 						<td>${fieldValue(bean: webhookInstance, field: "name")}</td>
-					
 						<td>${fieldValue(bean: webhookInstance, field: "url")}</td>
-					
 						<td>${fieldValue(bean: webhookInstance, field: "format")}</td>
-					
 						<td>${fieldValue(bean: webhookInstance, field: "service")}</td>
-					
 						<td>${fieldValue(bean: webhookInstance, field: "attempts")}</td>
-					
 					</tr>
 				</g:each>
 				</tbody>

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -31,28 +30,28 @@
 				<g:hiddenField name="id" value="${webhookInstance?.id}" />
 				<g:hiddenField name="version" value="${webhookInstance?.version}" />
 				<fieldset class="form">
-					
+
 					<div class="fieldcontain ${hasErrors(bean: webhookInstance, field: 'name', 'error')} ">
 						<label for="name">
 							<g:message code="webhook.name.label" default="Name" />
 						</label>
 						<g:textField name="name" value="${webhookInstance?.name}"/>
 					</div>
-					
+
 					<div class="fieldcontain ${hasErrors(bean: webhookInstance, field: 'url', 'error')} ">
 						<label for="url">
 							<g:message code="webhook.url.label" default="Url" />
 						</label>
 						<g:textField name="url" value="${webhookInstance?.url}"/>
 					</div>
-					
+
 					<div class="fieldcontain ${hasErrors(bean: webhookInstance, field: 'format', 'error')} ">
 						<label for="format">
 							<g:message code="webhook.format.label" default="Format" />
 						</label>
 						<span class="styled-select"><g:select name="format" from="${format}" value="${webhookInstance?.format}"/></span>
 					</div>
-					
+
 					<div class="fieldcontain ${hasErrors(bean: webhookInstance, field: 'service', 'error')} ">
 						<label for="service">
 							<g:message code="webhook.service.label" default="Service" />

@@ -19,16 +19,16 @@ userClassName = ''
 templateDir = "$webhookPluginDir/src/templates"
 appDir = "$basedir/grails-app"
 
-target('webhookInit': 'Creates artifacts for the Webhook plugin') {
+target(webhookInit: 'Creates artifacts for the Webhook plugin') {
 	if (!configure()) {
 		return 1
 	}
-	
+
 	createDomains()
 	copyControllersAndViews()
 	updateURLMappings()
 	updateConfig()
-	
+
 	printMessage """
 	*************************************************************
 	* SUCCESS! Created domain classes, controllers, and GSPs.   *
@@ -60,7 +60,7 @@ private void createDomains() {
 	generateFile "$templateDir/Webhook.groovy.template", "$appDir/domain/${dir}Webhook.groovy"
 	printMessage "Domain created..."
 }
-	
+
 private void copyControllersAndViews() {
 	ant.mkdir dir: "$appDir/views/webhook"
 	// add default views for webhooks administration
@@ -68,7 +68,7 @@ private void copyControllersAndViews() {
 	copyFile "$templateDir/edit.gsp.template", "$appDir/views/webhook/edit.gsp"
 	copyFile "$templateDir/list.gsp.template", "$appDir/views/webhook/list.gsp"
 	copyFile "$templateDir/show.gsp.template", "$appDir/views/webhook/show.gsp"
-	
+
 	String dir2 = packageToDir(packageName)
 	generateFile "$templateDir/WebhookController.groovy.template", "$appDir/controllers/${dir2}WebhookController.groovy"
 	printMessage "Controller / Views created..."

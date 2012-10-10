@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -26,72 +24,56 @@
 				<g:if test="${webhookInstance?.user}">
 				<li class="fieldcontain">
 					<span id="user-label" class="property-label"><g:message code="webhook.user.label" default="User" /></span>
-					
-						<span class="property-value" aria-labelledby="user-label"><g:fieldValue bean="${webhookInstance}" field="user"/></span>
-					
+					<span class="property-value" aria-labelledby="user-label"><g:fieldValue bean="${webhookInstance}" field="user"/></span>
 				</li>
 				</g:if>
 			
 				<g:if test="${webhookInstance?.name}">
 				<li class="fieldcontain">
 					<span id="name-label" class="property-label"><g:message code="webhook.name.label" default="Name" /></span>
-					
-						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${webhookInstance}" field="name"/></span>
-					
+					<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${webhookInstance}" field="name"/></span>
 				</li>
 				</g:if>
 			
 				<g:if test="${webhookInstance?.url}">
 				<li class="fieldcontain">
 					<span id="url-label" class="property-label"><g:message code="webhook.url.label" default="Url" /></span>
-					
-						<span class="property-value" aria-labelledby="url-label"><g:fieldValue bean="${webhookInstance}" field="url"/></span>
-					
+					<span class="property-value" aria-labelledby="url-label"><g:fieldValue bean="${webhookInstance}" field="url"/></span>
 				</li>
 				</g:if>
 			
 				<g:if test="${webhookInstance?.format}">
 				<li class="fieldcontain">
-					<span id="format-label" class="property-label"><g:message code="webhook.format.label" default="Format" /></span>
-					
-						<span class="property-value" aria-labelledby="format-label"><g:fieldValue bean="${webhookInstance}" field="format"/></span>
-					
+					<span id="format-label" class="property-label"><g:message code="webhook.format.label" default="Format" /></span>					
+					<span class="property-value" aria-labelledby="format-label"><g:fieldValue bean="${webhookInstance}" field="format"/></span>
 				</li>
 				</g:if>
 			
 				<g:if test="${webhookInstance?.service}">
 				<li class="fieldcontain">
 					<span id="service-label" class="property-label"><g:message code="webhook.service.label" default="Service" /></span>
-					
-						<span class="property-value" aria-labelledby="service-label"><g:fieldValue bean="${webhookInstance}" field="service"/></span>
-					
+					<span class="property-value" aria-labelledby="service-label"><g:fieldValue bean="${webhookInstance}" field="service"/></span>
 				</li>
 				</g:if>
 			
 				<g:if test="${webhookInstance?.attempts}">
 				<li class="fieldcontain">
 					<span id="attempts-label" class="property-label"><g:message code="webhook.attempts.label" default="Attempts" /></span>
-					
-						<span class="property-value" aria-labelledby="attempts-label"><g:fieldValue bean="${webhookInstance}" field="attempts"/></span>
-					
+					<span class="property-value" aria-labelledby="attempts-label"><g:fieldValue bean="${webhookInstance}" field="attempts"/></span>
 				</li>
 				</g:if>
 			
 				<g:if test="${webhookInstance?.dateCreated}">
 				<li class="fieldcontain">
 					<span id="dateCreated-label" class="property-label"><g:message code="webhook.dateCreated.label" default="Date Created" /></span>
-					
-						<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${webhookInstance?.dateCreated}" /></span>
-					
+					<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${webhookInstance?.dateCreated}" /></span>
 				</li>
 				</g:if>
 			
-				<g:if test="${webhookInstance?.dateModified}">
+				<g:if test="${webhookInstance?.lastModified}">
 				<li class="fieldcontain">
-					<span id="dateModified-label" class="property-label"><g:message code="webhook.dateModified.label" default="Date Modified" /></span>
-					
-						<span class="property-value" aria-labelledby="dateModified-label"><g:formatDate date="${webhookInstance?.dateModified}" /></span>
-					
+					<span id="lastModified-label" class="property-label"><g:message code="webhook.lastModified.label" default="Date Modified" /></span>
+					<span class="property-value" aria-labelledby="lastModified-label"><g:formatDate date="${webhookInstance?.lastModified}" /></span>
 				</li>
 				</g:if>
 			
