@@ -1,7 +1,5 @@
 package ${packageName}
 
-import java.util.Date;
-
 class Webhook {
 	${userClassName} user
 	String name
@@ -10,14 +8,14 @@ class Webhook {
 	String service
 	int attempts = 0
 	Date dateCreated
-	Date dateModified = new Date()
+	Date lastModified
 
-    static constraints = {
-		user(nullable:false)
-		name(nullable:false)
-		url(nullable:false)
-		format(nullable:false)
-		service(nullable:false)
-		attempts(nullable:false)
-    }
+	static constraints = {
+		user()
+		name()
+		url()
+		format()
+		service()
+		attempts()
+	}
 }
