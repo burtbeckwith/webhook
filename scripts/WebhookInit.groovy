@@ -74,17 +74,6 @@ private void copyControllersAndViews() {
 	printMessage "Controller / Views created..."
 }
 
-private void updateURLMappings() {
-	def mapFile = new File(appDir, 'conf/URLMappings.groovy')
-	if (mapFile.exists()) {
-		mapFile.withWriterAppend {
-			it.writeLine '\n// Added by the Webhook plugin:'
-			it.writeLine "\"/api/webhook/$format/$id\"(controller:'webhook',action:'api', parseRequest: true)"
-			it.writeLine "\"/api/webhook/$format\"(controller:'webhook',action:'api', parseRequest: true)"
-		}
-	}
-}
-
 private void updateConfig() {
 	def configFile = new File(appDir, 'conf/Config.groovy')
 	if (configFile.exists()) {
